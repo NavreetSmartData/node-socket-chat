@@ -5,9 +5,9 @@ var io = require('socket.io')(http);
 var mysql = require('mysql')
 var connection = mysql.createConnection({
   host     : 'localhost',
-  user     : 'root',
-  password : 'testteam',
-  database : 'laravel-chat'
+  user     : 'admin',
+  password : 'Welcome@123',
+  database : 'db_collypeq_collegewrk'
 });
 
 connection.connect(function(err) {
@@ -29,18 +29,18 @@ app.get('/', function(req, res){
 
 
 io.on('connection', function(socket){
-  
+
   socket.on('chat_message', function(msg){
 
-     connection.query("INSERT INTO messages (`user_id`, `user2_id`, `body`) VALUES ('" + msg.user_id + "', '" + msg.user2_id + "', '" + msg.body + "')", function (err, rows, fields) {
+     connection.query("INSERT INTO worker_admin_chat (`user_id`, `message`,`message_type`, `user_type`) VALUES ('" + msg.user_id + "', '" + msg.body + "','"+msg.message_type+"','"+msg.user_type+"')", function (err, rows, fields) {
      if (err) throw err
      console.log('The solution is: ',err)
     });
     console.log(msg);
-    
-    io.emit('user2_message', msg);
+
+    io.emit('user2_message'+msg.user_id, msg);
   });
-   
+
 
  //   socket.on('user_message', function(msg){
  //    //  connection.query('SELECT * FROM `messages`', function (err, rows, fields) {
